@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"runtime"
 	"strconv"
 	"sync"
 	"syscall"
@@ -161,9 +162,18 @@ func (p *Progress) SetNotify() {
 }
 
 func GetTerminalWidth() (int, error) {
+	var option string
+	switch runtime.GOOS {
+	case "darwin":
+		option = "-f"
+	case "linux":
+		option = "-F"
+	default:
+		option = "-f"
+	}
 	out, err := exec.Command(
 		"stty",
-		"-f",
+		option,
 		"/dev/tty",
 		"size").Output()
 	if err != nil {
