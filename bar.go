@@ -99,6 +99,14 @@ func (b *Bar) Set(n int) error {
 	return nil
 }
 
+//Set the current Terminal Width.
+func (b *Bar) SetWidth(n int) {
+	b.mtx.Lock()
+	defer b.mtx.Unlock()
+
+	b.Width = n
+}
+
 // Incr increments the current value by 1, time elapsed to current time and returns true. It returns false if the cursor has reached or exceeds total value.
 func (b *Bar) Incr() bool {
 	b.mtx.Lock()
